@@ -35,4 +35,4 @@ jobs:
     - name: Unit tests and coverage
       run: |
         coverage run -m pytest .
-        coverage report --fail-under=85
+        coverage report --omit="*/test*" --fail-under=85
