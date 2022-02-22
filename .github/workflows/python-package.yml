@@ -32,6 +32,7 @@ jobs:
       run: |
         black --check .
 
-    - name: Unit tests
+    - name: Unit tests and coverage
       run: |
-        pytest .
+        coverage run -m pytest .
+        coverage report --fail-under=85
