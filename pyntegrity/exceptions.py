@@ -33,7 +33,8 @@ class HashAlgorithmNotSupportedException(Exception):
             "[!] The hash string length does not "
             "match any supported hash algorithm: ["
         )
-        for hash_name, length in SUPPORTED_HASH_ALGOS.items():
+        for hash_name, infos in SUPPORTED_HASH_ALGOS.items():
+            length = infos["LENGTH"]
             self.message += f" {hash_name}: {length} chars, "
         self.message += "]"
 

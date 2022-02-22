@@ -1,6 +1,29 @@
+"""
+Pyntegrity is Python package that helps checking a file integrity.
+Copyright (C) 2022  Salah OSFOR
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <https://www.gnu.org/licenses/>.
+"""
 # Hash settings
 
 SHA256_LENGTH = 64
 MD5_LENGTH = 32
 
-SUPPORTED_HASH_ALGOS = {"SHA256": SHA256_LENGTH, "MD5": MD5_LENGTH}
+SHA256_REX = rf"^[A-Fa-f0-9]{SHA256_LENGTH}$"
+MD5_REX = rf"^[a-fA-F\d]{MD5_LENGTH}$"
+
+SUPPORTED_HASH_ALGOS = {
+    "sha256": {"REX": SHA256_REX, "LENGTH": SHA256_LENGTH},
+    "md5": {"REX": MD5_REX, "LENGTH": MD5_LENGTH},
+}
