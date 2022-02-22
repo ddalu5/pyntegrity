@@ -15,6 +15,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
+import re
+
 from .exceptions import HashStrNotValidException
 from .exceptions import HashAlgorithmNotSupportedException
 
@@ -38,3 +40,19 @@ def detect_hash_algo(hash_str: str):
         raise HashAlgorithmNotSupportedException(
             detected_length=hash_len, hash_str=hash_str
         )
+
+
+def validate_hash_str(hash_str: str):
+    """
+    Checks if the str is a valid checksum in the detected algorithm
+
+    :param hash_str:the hash string
+    :return: True if valid
+    :raises HashStrNotValidException: raised if the hash str isn't valid
+    """
+    hash_name = detect_hash_algo(hash_str)
+    pattern = re.compile(SUPPORTED_HASH_ALGOS[hash_name]["REX"])
+    if pattern.match(hash_str):
+        return True
+    else:
+        raise HashStrNotValidException(detected_hash_algo=hash_name, hash_str=hash_str)
