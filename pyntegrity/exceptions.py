@@ -19,16 +19,16 @@ from .config import SUPPORTED_HASH_ALGOS
 
 
 class HashAlgorithmNotSupportedException(Exception):
-    def __init__(self, detected_length: int, hash_str: str):
+    def __init__(self, detected_length: int, checksum_str: str):
         """
         Exception raised when the hash length does not match
         any supported Hash algorithm;
 
         :param detected_length: the length of the checked hash string
-        :param hash_str: the hash string
+        :param checksum_str: the hash string
         """
         self.detected_length = detected_length
-        self.hash_str = hash_str
+        self.checksum_str = checksum_str
         self.message = (
             "[!] The hash string length does not "
             "match any supported hash algorithm: ["
@@ -42,16 +42,16 @@ class HashAlgorithmNotSupportedException(Exception):
 
 
 class HashStrNotValidException(Exception):
-    def __init__(self, detected_hash_algo: str, hash_str: str):
+    def __init__(self, detected_hash_algo: str, checksum_str: str):
         """
         Exception raised when hash string isn't valid
         for the detected hash algorithm;
 
         :param detected_hash_algo: the name of the detected algo
-        :param hash_str: the hash string
+        :param checksum_str: the hash string
         """
         self.detected_hash_algo = detected_hash_algo
-        self.hash_str = hash_str
+        self.checksum_str = checksum_str
         self.message = (
             f"[!] The hash string doesn't "
             f'seem valid for the detected algorithm"{detected_hash_algo}"'

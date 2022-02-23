@@ -23,36 +23,38 @@ from .exceptions import HashAlgorithmNotSupportedException
 from .config import SUPPORTED_HASH_ALGOS
 
 
-def detect_hash_algo(hash_str: str):
+def detect_hash_algo(checksum_str: str):
     """
     Detects hash algorithm based on its length.
 
-    :param hash_str: the hash string
+    :param checksum_str: the hash string
     :return: the name of the hash algorithm
     :raises HashAlgorithmNotSupportedException: raised if the hash
         length isn't valid for any supported algorithm
     """
-    hash_len = len(hash_str)
+    hash_len = len(checksum_str)
     for name, infos in SUPPORTED_HASH_ALGOS.items():
         if infos["LENGTH"] == hash_len:
             return name
     else:
         raise HashAlgorithmNotSupportedException(
-            detected_length=hash_len, hash_str=hash_str
+            detected_length=hash_len, checksum_str=checksum_str
         )
 
 
-def validate_hash_str(hash_str: str):
+def validate_checksum_str(checksum_str: str):
     """
     Checks if the str is a valid checksum in the detected algorithm
 
-    :param hash_str:the hash string
+    :param checksum_str:the hash string
     :return: True if valid
     :raises HashStrNotValidException: raised if the hash str isn't valid
     """
-    hash_name = detect_hash_algo(hash_str)
+    hash_name = detect_hash_algo(checksum_str)
     pattern = re.compile(SUPPORTED_HASH_ALGOS[hash_name]["REX"])
-    if pattern.match(hash_str):
+    if pattern.match(checksum_str):
         return True
     else:
-        raise HashStrNotValidException(detected_hash_algo=hash_name, hash_str=hash_str)
+        raise HashStrNotValidException(
+            detected_hash_algo=hash_name, checksum_str=checksum_str
+        )
