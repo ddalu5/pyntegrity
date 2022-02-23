@@ -1,8 +1,12 @@
+from pathlib import Path
 from unittest import TestCase
 
 from pyntegrity.core import detect_hash_algo
+from pyntegrity.core import get_file_path_from_str
 from pyntegrity.core import validate_checksum_str
 
+from pyntegrity.exceptions import FileNotFoundException
+from pyntegrity.exceptions import ObjectNotAFileException
 from pyntegrity.exceptions import HashStrNotValidException
 from pyntegrity.exceptions import HashAlgorithmNotSupportedException
 
@@ -44,3 +48,17 @@ class TestValidateHashStr(TestCase):
         )
         with self.assertRaises(HashStrNotValidException):
             validate_checksum_str(invalid_sha256)
+
+
+class TestGetFileFromStr(TestCase):
+    def test_get_file_path_from_str_ok(self):
+        obj = get_file_path_from_str("tests/data/test_file.txt")
+        self.assertTrue(isinstance(obj, Path))
+
+    def test_get_file_path_from_str_nok_is_not_file(self):
+        with self.assertRaises(ObjectNotAFileException):
+            get_file_path_from_str("tests/data/")
+
+    def test_get_file_path_from_str_nok_not_found(self):
+        with self.assertRaises(FileNotFoundException):
+            get_file_path_from_str("tests/data/doesnt_exists.csv")

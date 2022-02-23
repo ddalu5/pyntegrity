@@ -57,3 +57,39 @@ class HashStrNotValidException(Exception):
             f'seem valid for the detected algorithm"{detected_hash_algo}"'
         )
         super().__init__(self.message)
+
+
+class FileNotFoundException(Exception):
+    def __init__(self, file_path: str):
+        """
+        Exception raised when the file isn't found using the provided path;
+
+        :param file_path: provided file path
+        """
+        self.file_path = file_path
+        self.message = f'[!] file "{file_path}" not found!'
+        super().__init__(self.message)
+
+
+class ObjectNotAFileException(Exception):
+    def __init__(self, file_path: str):
+        """
+        Exception raised when the provided path isn't a file;
+
+        :param file_path: provided file path
+        """
+        self.file_path = file_path
+        self.message = f'[!] the "{file_path}" is not a valid file!'
+        super().__init__(self.message)
+
+
+class MissingFilePermissionException(Exception):
+    def __init__(self, file_path: str):
+        """
+        Exception raised when the process can't read the file;
+
+        :param file_path: provided file path
+        """
+        self.file_path = file_path
+        self.message = f'[!] the program can not read the file "{file_path}" !'
+        super().__init__(self.message)
