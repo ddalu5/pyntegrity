@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import os
 import re
 import enum
+import hashlib
 from pathlib import Path
 
 from .exceptions import FileNotFoundException
@@ -45,22 +46,24 @@ def detect_hash_algo(checksum_str: str):
     hash_len = len(checksum_str)
     for name, infos in SUPPORTED_HASH_ALGOS.items():
         if infos["LENGTH"] == hash_len:
-            return name
+            if validate_checksum_str(checksum_str=checksum_str, hash_algo=name):
+                return name
     else:
         raise HashAlgorithmNotSupportedException(
             detected_length=hash_len, checksum_str=checksum_str
         )
 
 
-def validate_checksum_str(checksum_str: str):
+def validate_checksum_str(checksum_str: str, hash_algo: str):
     """
     Checks if the str is a valid checksum in the detected algorithm
 
     :param checksum_str:the hash string
+    :param hash_algo: the hash algorithm
     :return: True if valid
     :raises HashStrNotValidException: raised if the hash str isn't valid
     """
-    hash_name = detect_hash_algo(checksum_str)
+    hash_name = hash_algo
     pattern = re.compile(SUPPORTED_HASH_ALGOS[hash_name]["REX"])
     if pattern.match(checksum_str):
         return True
@@ -92,11 +95,18 @@ def get_file_path_from_str(str_path: str):
 
 
 class IntegrityValidator:
-    def __init__(self, str_path: str):
+    def __init__(self, str_path: str, checksum_str: str):
+        self.hash_algo = detect_hash_algo(checksum_str=checksum_str)
+        self.checksum_str = checksum_str
         self.file = get_file_path_from_str(str_path)
+        self.hashlib_obj = hashlib.new(self.hash_algo)
 
     def validate_file_integrity(self):
-        pass
+        file_checksum = self.get_file_checksum()
+        return file_checksum == self.checksum_str
 
     def get_file_checksum(self):
-        pass
+        with self.file.open() as file_to_validate:
+            file_content = file_to_validate.read()
+            self.hashlib_obj.update(file_content)
+            return self.hashlib_obj.hexdigest()
