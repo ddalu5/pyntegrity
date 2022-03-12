@@ -2,8 +2,9 @@ from pathlib import Path
 from unittest import TestCase
 
 from pyntegrity.core import detect_hash_algo
-from pyntegrity.core import get_file_path_from_str
+from pyntegrity.core import IntegrityValidator
 from pyntegrity.core import validate_checksum_str
+from pyntegrity.core import get_file_path_from_str
 
 from pyntegrity.exceptions import FileNotFoundException
 from pyntegrity.exceptions import ObjectNotAFileException
@@ -62,3 +63,19 @@ class TestGetFileFromStr(TestCase):
     def test_get_file_path_from_str_nok_not_found(self):
         with self.assertRaises(FileNotFoundException):
             get_file_path_from_str("tests/data/doesnt_exists.csv")
+
+
+class TestGetFileChecksum(TestCase):
+    def test_get_file_checksum_text(self):
+        obj = IntegrityValidator(
+            str_path="tests/data/test_file.txt",
+            checksum_str="bbe4f28b27120e0a9611d90d242bc656",
+        )
+        self.assertEqual(obj.get_file_checksum(), "bbe4f28b27120e0a9611d90d242bc656")
+
+    def test_get_file_checksum_bin(self):
+        obj = IntegrityValidator(
+            str_path="tests/data/test_file.dat",
+            checksum_str="0cb988d042a7f28dd5fe2b55b3f5ac7a",
+        )
+        self.assertEqual(obj.get_file_checksum(), "0cb988d042a7f28dd5fe2b55b3f5ac7a")

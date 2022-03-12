@@ -108,5 +108,5 @@ class IntegrityValidator:
     def get_file_checksum(self):
         with self.file.open() as file_to_validate:
             file_content = file_to_validate.read()
-            self.hashlib_obj.update(file_content)
+            self.hashlib_obj.update(file_content.encode())
             return self.hashlib_obj.hexdigest()
