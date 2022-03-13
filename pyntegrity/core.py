@@ -96,17 +96,33 @@ def get_file_path_from_str(str_path: str):
 
 class IntegrityValidator:
     def __init__(self, str_path: str, checksum_str: str):
+        """
+        A class to validate file integrity using a checksum string
+
+        :param str_path: the path of the target file
+        :param checksum_str:
+        """
         self.hash_algo = detect_hash_algo(checksum_str=checksum_str)
         self.checksum_str = checksum_str
         self.file = get_file_path_from_str(str_path)
-        self.hashlib_obj = hashlib.new(self.hash_algo)
 
     def validate_file_integrity(self):
-        file_checksum = self.get_file_checksum()
+        """
+        Function to validate the file integrity
+        :return: True is the file valid, False if not
+        """
+        file_checksum = self.get_file_checksum(self.hash_algo)
         return file_checksum == self.checksum_str
 
-    def get_file_checksum(self):
+    def get_file_checksum(self, hash_algo: str):
+        """
+        Calculate file checksum
+
+        :param hash_algo: the name of hash algo that will be used for the checksum
+        :return: return file checksum
+        """
+        hashlib_obj = hashlib.new(hash_algo)
         with self.file.open() as file_to_validate:
             file_content = file_to_validate.read()
-            self.hashlib_obj.update(file_content.encode())
-            return self.hashlib_obj.hexdigest()
+            hashlib_obj.update(file_content.encode())
+            return hashlib_obj.hexdigest()

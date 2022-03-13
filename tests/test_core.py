@@ -71,11 +71,33 @@ class TestGetFileChecksum(TestCase):
             str_path="tests/data/test_file.txt",
             checksum_str="bbe4f28b27120e0a9611d90d242bc656",
         )
-        self.assertEqual(obj.get_file_checksum(), "bbe4f28b27120e0a9611d90d242bc656")
+        self.assertEqual(
+            obj.get_file_checksum("md5"),
+            "bbe4f28b27120e0a9611d90d242bc656",
+        )
 
     def test_get_file_checksum_bin(self):
         obj = IntegrityValidator(
             str_path="tests/data/test_file.dat",
             checksum_str="0cb988d042a7f28dd5fe2b55b3f5ac7a",
         )
-        self.assertEqual(obj.get_file_checksum(), "0cb988d042a7f28dd5fe2b55b3f5ac7a")
+        self.assertEqual(
+            obj.get_file_checksum("md5"),
+            "0cb988d042a7f28dd5fe2b55b3f5ac7a",
+        )
+
+
+class TestValidateFileIntegrity(TestCase):
+    def test_validate_file_integrity_true(self):
+        obj = IntegrityValidator(
+            str_path="tests/data/test_file.dat",
+            checksum_str="0cb988d042a7f28dd5fe2b55b3f5ac7a",
+        )
+        self.assertTrue(obj.validate_file_integrity())
+
+    def test_validate_file_integrity_false(self):
+        obj = IntegrityValidator(
+            str_path="tests/data/test_file.dat",
+            checksum_str="0cb988d042a7f28dd5fe2b55b3fbac7a",
+        )
+        self.assertFalse(obj.validate_file_integrity())
