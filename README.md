@@ -15,7 +15,7 @@ Tested on:
 
 ## Documentation
 
-Latest version is 1.0.2
+Latest version is 1.0.3
 
 ## Installation
 
@@ -73,3 +73,7 @@ Right now it will open anyfile in text mode (even binary).
 - Support more file type modes
 - Support more checksum algorithms
 - Support for big files
+
+## License
+
+GPL-3.0 see [license content](https://github.com/ddalu5/pyntegrity/blob/main/LICENSE)
