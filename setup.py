@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="pyntegrity",
-    version="1.0.1",
+    version="1.0.2",
     description="Pyntegrity is a Python package that helps you check a file integrity.",
     long_description=long_description,
     long_description_content_type="text/markdown",
