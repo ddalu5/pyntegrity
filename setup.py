@@ -5,14 +5,14 @@ with open("README.md", "r") as fh:
 
 setup(
     name="pyntegrity",
-    version="1.0.2",
+    version="1.0.3",
     description="Pyntegrity is a Python package that helps you check a file integrity.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/ddalu5/pyntegrity",
     author="Salah OSFOR",
     author_email="osfor.salah@gmail.com",
-    license="GNU V3",
+    license="GPL-3.0",
     packages=find_packages(include=["pyntegrity"]),
     test_suite="tests",
     tests_require=["unittest", "black", "pytest", "coverage"],
