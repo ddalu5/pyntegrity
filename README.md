@@ -15,7 +15,7 @@ Tested on:
 
 ## Documentation
 
-Latest version is 1.0.1
+Latest version is 1.0.2
 
 ## Installation
 
@@ -31,6 +31,7 @@ The supported checksum algorithms are:
 
 - md5
 - sha256
+- sha512
 
 #### Target files sizes
 
