@@ -1,3 +1,4 @@
+from pyntegrity import get_version
 from setuptools import setup, find_packages
 
 with open("README.md", "r") as fh:
@@ -5,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name="pyntegrity",
-    version="1.0.3",
+    version=get_version(),
     description="Pyntegrity is a Python package that helps you check a file integrity.",
     long_description=long_description,
     long_description_content_type="text/markdown",
