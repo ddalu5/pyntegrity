@@ -15,7 +15,7 @@ Tested on:
 
 ## Documentation
 
-Latest version is 1.0.3
+Latest version is 1.2.0
 
 ## Installation
 
