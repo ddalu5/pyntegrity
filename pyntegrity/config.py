@@ -17,13 +17,18 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 # Hash settings
 
+SHA512_LENGTH = 128
 SHA256_LENGTH = 64
 MD5_LENGTH = 32
 
+SHA512_REX = r"^[A-Fa-f\d]{128}$"
 SHA256_REX = r"^[A-Fa-f\d]{64}$"
 MD5_REX = r"^[a-fA-F\d]{32}$"
 
 SUPPORTED_HASH_ALGOS = {
     "sha256": {"REX": SHA256_REX, "LENGTH": SHA256_LENGTH},
     "md5": {"REX": MD5_REX, "LENGTH": MD5_LENGTH},
+    "sha512": {"REX": SHA512_REX, "LENGTH": SHA512_LENGTH},
 }
+
+VERSION = "1.2.0"

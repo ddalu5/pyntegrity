@@ -29,10 +29,6 @@ from .exceptions import HashAlgorithmNotSupportedException
 
 from .config import SUPPORTED_HASH_ALGOS
 
-HashAlgoEnum = enum.Enum(
-    "HashAlgoEnum", {key: key for key in SUPPORTED_HASH_ALGOS.keys()}
-)
-
 
 def detect_hash_algo(checksum_str: str):
     """
