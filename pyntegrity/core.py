@@ -34,6 +34,7 @@ from .config import SUPPORTED_HASH_ALGOS
 def get_version():
     return VERSION
 
+
 def detect_hash_algo(checksum_str: str):
     """
     Detects hash algorithm based on its length.
