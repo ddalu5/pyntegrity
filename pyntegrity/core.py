@@ -17,7 +17,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 import os
 import re
-import enum
 import hashlib
 from pathlib import Path
 
@@ -26,8 +25,14 @@ from .exceptions import ObjectNotAFileException
 from .exceptions import HashStrNotValidException
 from .exceptions import MissingFilePermissionException
 from .exceptions import HashAlgorithmNotSupportedException
+from .exceptions import DetectedHashAlgorithmNotSupportedException
 
+from .config import VERSION
 from .config import SUPPORTED_HASH_ALGOS
+
+
+def get_version():
+    return VERSION
 
 
 def detect_hash_algo(checksum_str: str):
@@ -36,7 +41,7 @@ def detect_hash_algo(checksum_str: str):
 
     :param checksum_str: the hash string
     :return: the name of the hash algorithm
-    :raises HashAlgorithmNotSupportedException: raised if the hash
+    :raises DetectedHashAlgorithmNotSupportedException: raised if the hash
         length isn't valid for any supported algorithm
     """
     hash_len = len(checksum_str)
@@ -45,7 +50,7 @@ def detect_hash_algo(checksum_str: str):
             if validate_checksum_str(checksum_str=checksum_str, hash_algo=name):
                 return name
     else:
-        raise HashAlgorithmNotSupportedException(
+        raise DetectedHashAlgorithmNotSupportedException(
             detected_length=hash_len, checksum_str=checksum_str
         )
 
@@ -90,6 +95,25 @@ def get_file_path_from_str(str_path: str):
         raise ObjectNotAFileException(file_path=str_path)
 
 
+def calculate_file_checksum(file_path: str, checksum_algo: str):
+    """
+    Calculate file checksum
+
+    :param file_path: target file path
+    :param checksum_algo: the name of hash algo that will be used for the checksum
+    :return: return file checksum
+    """
+    if checksum_algo.lower() in SUPPORTED_HASH_ALGOS:
+        file = get_file_path_from_str(file_path)
+        hashlib_obj = hashlib.new(checksum_algo)
+        with file.open() as file_to_validate:
+            file_content = file_to_validate.read()
+            hashlib_obj.update(file_content.encode())
+            return hashlib_obj.hexdigest()
+    else:
+        raise HashAlgorithmNotSupportedException(checksum_algo)
+
+
 class IntegrityValidator:
     def __init__(self, str_path: str, checksum_str: str):
         """
@@ -100,7 +124,7 @@ class IntegrityValidator:
         """
         self.hash_algo = detect_hash_algo(checksum_str=checksum_str)
         self.checksum_str = checksum_str
-        self.file = get_file_path_from_str(str_path)
+        self.file_path = str_path
 
     def validate_file_integrity(self):
         """
@@ -117,8 +141,4 @@ class IntegrityValidator:
         :param hash_algo: the name of hash algo that will be used for the checksum
         :return: return file checksum
         """
-        hashlib_obj = hashlib.new(hash_algo)
-        with self.file.open() as file_to_validate:
-            file_content = file_to_validate.read()
-            hashlib_obj.update(file_content.encode())
-            return hashlib_obj.hexdigest()
+        return calculate_file_checksum(self.file_path, hash_algo)

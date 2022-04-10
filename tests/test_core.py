@@ -10,6 +10,7 @@ from pyntegrity.exceptions import FileNotFoundException
 from pyntegrity.exceptions import ObjectNotAFileException
 from pyntegrity.exceptions import HashStrNotValidException
 from pyntegrity.exceptions import HashAlgorithmNotSupportedException
+from pyntegrity.exceptions import DetectedHashAlgorithmNotSupportedException
 
 
 class TestDetectHashAlgo(TestCase):
@@ -23,7 +24,7 @@ class TestDetectHashAlgo(TestCase):
 
     def test_detect_hash_algo_nok(self):
         invalid_checksum_str = "6545ed"
-        with self.assertRaises(HashAlgorithmNotSupportedException):
+        with self.assertRaises(DetectedHashAlgorithmNotSupportedException):
             detect_hash_algo(invalid_checksum_str)
 
 
