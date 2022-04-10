@@ -1,5 +1,1 @@
-from .config import VERSION
-
-
-def get_version():
-    return VERSION
+from .core import get_version

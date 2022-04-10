@@ -19,6 +19,25 @@ from .config import SUPPORTED_HASH_ALGOS
 
 
 class HashAlgorithmNotSupportedException(Exception):
+    def __init__(self, checksum_name: str):
+        """
+        Exception raised when the hash algorithm used is not supported
+
+        :param checksum_name: the name of the hash algorithm
+        """
+        self.checksum_name = checksum_name
+        self.message = (
+            f"[!] The checksum algorithm {checksum_name} does not "
+            "match any supported hash algorithm: ["
+        )
+        for hash_name, infos in SUPPORTED_HASH_ALGOS.items():
+            self.message += f" {hash_name}, "
+        self.message += "]"
+
+        super().__init__(self.message)
+
+
+class DetectedHashAlgorithmNotSupportedException(Exception):
     def __init__(self, detected_length: int, checksum_str: str):
         """
         Exception raised when the hash length does not match
